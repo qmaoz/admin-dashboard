@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { ThemeProvider, createTheme, CssBaseline, Box } from "@mui/material";
+import { ThemeProvider, createTheme, CssBaseline, AppBar, Toolbar, IconButton, Box } from "@mui/material";
 
 import Sidebar from './components/Sidebar';
 import PageTitle from "./components/PageTitle";
@@ -9,11 +9,16 @@ import Overview from "./pages/Overview";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 
+import MenuIcon from "@mui/icons-material/Menu";
 
 function App() {
   const stored = localStorage.getItem("mui-mode");
   const initialMode = stored === "dark" || stored === "light" ? stored : "light";
   const [mode, setMode] = useState(initialMode);
+
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const handleDrawerToggle = () => setMobileOpen((prev) => !prev);
+  const sidebarWidth = 240;
 
   useEffect(() => {
     localStorage.setItem("mui-mode", mode);
@@ -32,8 +37,23 @@ function App() {
         <CssBaseline />
         <BrowserRouter>
           <Box sx={{ display: "flex" }}>
-            <Sidebar />
-            <Box sx={{ flexGrow: 1, padding: "20px" }}>
+            <AppBar position="fixed" sx={{ display: { sm: "none" } }}>
+              <Toolbar>
+                <IconButton color="inherit" edge="start" onClick={handleDrawerToggle}>
+                  <MenuIcon />
+                </IconButton>
+              </Toolbar>
+            </AppBar>
+            <Sidebar width={sidebarWidth} mobileOpen={mobileOpen} onClose={handleDrawerToggle} />
+            <Box
+              sx={{
+                maxWidth: "100vw",
+                overflowX: "hidden",
+                flexGrow: 1,
+                p: {xs: 3, sm: 3},
+                mt: { xs: 7, sm: 0 },
+              }}
+            >
               <Routes>
                 <Route path="/" element={<Navigate to="/overview" replace />} />
                 <Route path="/overview" element={<Overview />} />

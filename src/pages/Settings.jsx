@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Switch, Checkbox, FormControlLabel, TextField, Button, Typography, Paper } from "@mui/material";
+import { Switch, Checkbox, FormControlLabel, TextField, Button, Paper } from "@mui/material";
+import PageTitle from "../components/PageTitle";
 
 export default function Settings({ darkMode, onToggleDarkMode }) {
   const [notifications, setNotifications] = useState(false);
@@ -16,25 +17,30 @@ export default function Settings({ darkMode, onToggleDarkMode }) {
 
   return (
     <>
-      <Typography variant="h4" gutterBottom>
-        Settings
-      </Typography>
+      <PageTitle>Settings</PageTitle>
 
-      <Paper sx={{ p: 3, maxWidth: 500 }}>
+      <Paper
+        sx={{
+          p: 3,
+          maxWidth: 448,
+          transition: "0.3s",
+          boxShadow: 3,
+          "&:hover": {
+            boxShadow: 6,
+          },
+        }}
+      >
       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px", maxWidth: "400px" }}>
-        {/* Theme switcher */}
         <FormControlLabel
           control={<Switch checked={darkMode} onChange={(e) => onToggleDarkMode(e.target.checked)} />}
           label="Dark Mode"
         />
 
-        {/* Checkbox */}
         <FormControlLabel
           control={<Checkbox checked={notifications} onChange={(e) => setNotifications(e.target.checked)} />}
           label="Receive notifications"
         />
 
-        {/* Text input */}
         <TextField
           label="Username"
           value={username}

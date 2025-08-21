@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel, Typography } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel } from "@mui/material";
+import PageTitle from "../components/PageTitle";
 
 export default function Users() {
   const [users, setUsers] = useState([
@@ -15,34 +16,57 @@ export default function Users() {
     { id: 9, name: "Andrii", email: "andrii@gmail.com", role: "Editor", age: 31 },
   ]);
 
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState(null); // null | "asc" | "desc"
 
   const handleSort = () => {
-    const isAsc = order === "asc";
-    
-    const sorted = users.slice().sort((a, b) =>
-      isAsc
-        ? a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
-        : b.name.localeCompare(a.name, undefined, { sensitivity: "base" })
-    );
-
-    setUsers(sorted);
-    setOrder(isAsc ? "desc" : "asc");
+    if (order === null) {
+      setUsers(
+        users.slice().sort((a, b) =>
+          a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
+        )
+      );
+      setOrder("asc");
+    } else if (order === "asc") {
+      setUsers(
+        users.slice().sort((a, b) =>
+          b.name.localeCompare(a.name, undefined, { sensitivity: "base" })
+        )
+      );
+      setOrder("desc");
+    } else {
+      setUsers(users.slice().sort((a, b) => a.id - b.id));
+      setOrder(null);
+    }
   };
 
   return (
     <>
-      <Typography variant="h4" gutterBottom>
-        Users
-      </Typography>
+      <PageTitle>Users</PageTitle>
 
-      <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: "auto" }}>
+      <TableContainer
+        component={Paper}
+        sx={{
+          maxWidth: "100%",
+          overflowX: "auto",
+          transition: "0.3s",
+          boxShadow: 2,
+          "&:hover": {
+            boxShadow: 6,
+          },
+        }}
+      >
         <Table>
-          <TableHead>
+          <TableHead
+            sx={{
+              "& th:hover": {
+                backgroundColor: "action.hover",
+              },
+            }}
+          >
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell>
-                <TableSortLabel active={true} direction={order} onClick={handleSort}>
+              <TableCell onClick={handleSort} sx={{ cursor: "pointer" }}>
+                <TableSortLabel active={order !== null} direction={order ?? "asc"}>
                   Name
                 </TableSortLabel>
               </TableCell>

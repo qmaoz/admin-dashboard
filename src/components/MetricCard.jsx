@@ -6,6 +6,7 @@ export default function MetricCard({ title, value, icon: Icon, subtitle }) {
       sx={{
         minWidth: 200,
         p: 2,
+        height: "100%",
         boxShadow: 3,
         borderRadius: 2,
         transition: "0.3s",
