@@ -12,6 +12,9 @@ This project is a simple **Admin Dashboard prototype** built with **Vite + React
 
 ```bash
    git clone https://github.com/qmaoz/admin-dashboard.git
+   ```
+
+```bash
    cd admin-dashboard
    ```
 
