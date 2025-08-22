@@ -11,8 +11,8 @@ This project is a simple **Admin Dashboard prototype** built with **Vite + React
 1. **Clone the repository:**
 
 ```bash
-   git clone <your-repo-url>
-   cd <your-repo-folder>
+   git clone https://github.com/qmaoz/admin-dashboard.git
+   cd admin-dashboard
    ```
 
 2. **Install dependencies:**
@@ -46,7 +46,7 @@ src/
  │
  ├── pages/
  │    ├── Overview.jsx       # Metrics dashboard page
- │    ├── Users.jsx          # Users table with sorting
+ │    ├── Users.jsx          # Users table with sorting by name
  │    └── Settings.jsx       # Settings form (dark mode, notifications, username)
  │
  ├── App.jsx                 # Root component, routing, theme provider
@@ -63,7 +63,7 @@ Routing is handled with **React Router v6**:
 * `/users` → Users table with sorting by name
 * `/settings` → Settings page with form inputs
 * `/` → Redirects to `/overview`
-* `\*` → Fallback for `Not Found`
+* `*` → Fallback for `Not Found`
 
 The router is wrapped inside `BrowserRouter` in **App.jsx**.
 
@@ -75,7 +75,7 @@ The router is wrapped inside `BrowserRouter` in **App.jsx**.
 * **React `useEffect`** persists theme mode to `localStorage`.
 * **React `useMemo`** optimizes theme creation to avoid unnecessary recalculations.
 
-There is no global state manager (Redux/Zustand) since the app is small and self-contained.
+State is managed locally with React hooks (useState, useEffect), since the app is small and does not require a global state manager.
 
 ---
 
@@ -105,4 +105,4 @@ This structure ensures scalability and reusability if new pages or features are 
 
 * **React + Vite** (frontend framework \& build tool)
 * **Material UI v7** (UI components \& styling)
-* **React Router v6** (routing)
+* **React Router v7** (routing)
