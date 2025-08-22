@@ -30,12 +30,6 @@ This project is a simple **Admin Dashboard prototype** built with **Vite + React
    npm run dev
    ```
 
-4. **Build for production:**
-
-```bash
-   npm run build
-   ```
-
 ---
 
 ## Project Structure
