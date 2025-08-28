@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { ThemeProvider, createTheme, CssBaseline, AppBar, Toolbar, IconButton, Box } from "@mui/material";
+import { ThemeProvider, createTheme, CssBaseline, AppBar, Toolbar, IconButton, Box, useMediaQuery } from "@mui/material";
 
 import Sidebar from './components/Sidebar';
 import PageTitle from "./components/PageTitle";
@@ -12,24 +12,36 @@ import Settings from "./pages/Settings";
 import MenuIcon from "@mui/icons-material/Menu";
 
 function App() {
+  // Theme (dark or light)
   const stored = localStorage.getItem("mui-mode");
   const initialMode = stored === "dark" || stored === "light" ? stored : "light";
-  const [mode, setMode] = useState(initialMode);
+  const [themeMode, setThemeMode] = useState(initialMode);
 
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const handleDrawerToggle = () => setMobileOpen((prev) => !prev);
-  const sidebarWidth = 240;
+  const handleThemeModeToggle = (isDark) => setThemeMode(isDark ? "dark" : "light");
 
   useEffect(() => {
-    localStorage.setItem("mui-mode", mode);
-  }, [mode]);
+    localStorage.setItem("mui-mode", themeMode);
+  }, [themeMode]);
 
   const theme = useMemo(
-    () => createTheme({ palette: { mode } }),
-    [mode]
+    () => createTheme({ palette: { mode: themeMode } }),
+    [themeMode]
   );
 
-  const handleToggleDark = (isDark) => setMode(isDark ? "dark" : "light");
+  // Sidebar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const openSidebar = () => setIsSidebarOpen(true);
+  const closeSidebar = () => setIsSidebarOpen(false);
+  const sidebarWidth = 240;
+
+  // Close sidebar when screen is larger than sm
+  const isViewportAtLeastSm = useMediaQuery(theme.breakpoints.up("sm"));
+  
+  useEffect(() => {
+    if (isViewportAtLeastSm && isSidebarOpen) {
+      setIsSidebarOpen(false);
+    }
+  }, [isViewportAtLeastSm, isSidebarOpen]);  
 
   return (
     <>
@@ -39,12 +51,12 @@ function App() {
           <Box sx={{ display: "flex" }}>
             <AppBar position="fixed" sx={{ display: { sm: "none" } }}>
               <Toolbar>
-                <IconButton color="inherit" edge="start" onClick={handleDrawerToggle}>
+                <IconButton color="inherit" edge="start" onClick={openSidebar}>
                   <MenuIcon />
                 </IconButton>
               </Toolbar>
             </AppBar>
-            <Sidebar width={sidebarWidth} mobileOpen={mobileOpen} onClose={handleDrawerToggle} />
+            <Sidebar sidebarWidth={sidebarWidth} isSidebarOpen={isSidebarOpen} closeSidebar={closeSidebar} />
             <Box
               sx={{
                 maxWidth: "100vw",
@@ -61,8 +73,8 @@ function App() {
                 <Route path="/settings"
                   element={
                     <Settings
-                      darkMode={mode === "dark"}
-                      onToggleDarkMode={handleToggleDark}
+                      darkMode={themeMode === "dark"}
+                      onToggleDarkMode={handleThemeModeToggle}
                     />
                   }
                 />
