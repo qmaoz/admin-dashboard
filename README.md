@@ -4,6 +4,8 @@
 
 This project is a simple **Admin Dashboard prototype** built with **Vite + React** and **Material UI (MUI v7)**. It demonstrates a clean and reusable UI structure with routing, state management, and adaptive design.
 
+The site is available at [https://qmaoz.github.io/admin-dashboard/](https://qmaoz.github.io/admin-dashboard/).
+
 ---
 
 ## Installation \& Local Run
